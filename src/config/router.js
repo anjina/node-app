@@ -1,3 +1,4 @@
 module.exports = [
-  ['/index/:id?', 'rest'], // 第三种方式
+  ['/index/:id?', 'rest'],
+  ['/login/:id?', 'rest'],
 ];
