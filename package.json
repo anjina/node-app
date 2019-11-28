@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
+    "cookie-parser": "^1.4.4",
     "jsonwebtoken": "^8.5.1",
+    "svg-captcha": "^1.4.0",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
     "think-logger3": "^1.0.0",
