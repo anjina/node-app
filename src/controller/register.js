@@ -20,7 +20,7 @@ module.exports = class extends Base {
           }
         );
         const token = generateToken(phoneNum);
-        await this.session('token', token);
+        // think.config('token', token);
         return this.success({
           id: newId,
           token

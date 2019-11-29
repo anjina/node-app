@@ -25,13 +25,13 @@ module.exports = class extends Base {
           const newId = await userModel.add({ phoneNum });
           return this.success({ id: newId, token });
         }
+        // think.config('token', token);
         return this.success(Object.assign(data, { token }));
       } else {
         // 手机密码登录
         const { phoneNum, password, imgCaptcha } = this.post();
         const data = await userModel.where({ phoneNum }).find();
         if(think.isEmpty(data)) {
-          console.log(111111111111111);
           return this.fail('该手机号不存在');
         }
         if(data.password !== password) {
@@ -42,7 +42,7 @@ module.exports = class extends Base {
           return this.fail('验证码错误');
         } else {
           const token = generateToken(phoneNum);
-          await this.session('token', token);
+          // think.config('token', token);
           return this.success(Object.assign(data, { token }))
         }
       }

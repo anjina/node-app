@@ -36,6 +36,10 @@ module.exports = [
     }
   },
   {
+    handle: 'token',
+    options: {}
+  },
+  {
     handle: 'router',
     options: {}
   },
