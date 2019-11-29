@@ -25,7 +25,6 @@ module.exports = class extends Base {
           const newId = await userModel.add({ phoneNum });
           return this.success({ id: newId, token });
         }
-        // think.config('token', token);
         return this.success(Object.assign(data, { token }));
       } else {
         // 手机密码登录
@@ -42,7 +41,6 @@ module.exports = class extends Base {
           return this.fail('验证码错误');
         } else {
           const token = generateToken(phoneNum);
-          // think.config('token', token);
           return this.success(Object.assign(data, { token }))
         }
       }
