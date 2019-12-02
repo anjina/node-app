@@ -22,8 +22,15 @@ module.exports = class extends Base {
         const data = await userModel.where({ phoneNum }).find();
         // 无账号，顺便注册
         if(think.isEmpty(data)) {
-          const newId = await userModel.add({ phoneNum });
-          return this.success({ id: newId, token });
+          const newId = await userModel.add(
+            {
+              phoneNum,
+              nickName: 'Dialy' + Math.floor(Date.now() / 1000),
+              sign: '此人很懒，什么都没有留下'
+            }
+          );
+          const userInfo = await userModel.where({ id: newId }).find();
+          return this.success({ ...userInfo, token });
         }
         return this.success(Object.assign(data, { token }));
       } else {

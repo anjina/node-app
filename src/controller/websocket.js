@@ -18,7 +18,6 @@ module.exports = class extends think.Controller {
     for(const [key, value] of Object.entries(clients)) {
       if(value === id) {
         delete clients[key];
-        return;
       }
     }
     this.broadcast('count', `All: ${Object.keys(clients).length}`);

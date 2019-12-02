@@ -17,16 +17,18 @@ module.exports = class extends Base {
           {
             phoneNum,
             password,
+            nickName: 'Dialy' + Math.floor(Date.now() / 1000),
+            sign: '此人很懒，什么都没有留下'
           }
         );
+        const userInfo = await userModel.where({ id: newId }).find();
         const token = generateToken(phoneNum);
         return this.success({
-          id: newId,
+          ...userInfo,
           token
         })
       } else {
-        this.status = 201;
-        return this.success();
+        return this.fail(201);
       }
     } catch (error) {
       return this.fail(error);
