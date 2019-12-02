@@ -4,4 +4,5 @@ module.exports = [
   ['/register/:id?', 'rest'],
   ['/captcha/:id?', 'rest'],
   ['/lovers/:id?', 'rest'],
+  ['/user/:id?', 'rest']
 ];
