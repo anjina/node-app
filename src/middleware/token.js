@@ -2,7 +2,9 @@ const verifyToken = require('../config/token').verifyToken;
 
 module.exports = options => {
   return (ctx, next) => {
-    if(ctx.path === '/login' || ctx.path === '/register' || ctx.path.includes('/websocket')) {
+    // 白名单
+    const allowPaths = ['/login', '/register', '/websocket', '/captcha'];
+    if(allowPaths.some(path => ctx.path.includes(path))) {
       return next();
     }
 
