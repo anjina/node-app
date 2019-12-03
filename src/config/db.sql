@@ -11,24 +11,23 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-
--- Dumping database structure for dialy_pay
-CREATE DATABASE IF NOT EXISTS `dialy_pay` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `dialy_pay`;
-
 -- Dumping structure for table dialy_pay.message
 CREATE TABLE IF NOT EXISTS `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` varchar(64) NOT NULL COMMENT '用户id',
-  `message` text NOT NULL COMMENT '消息内容',
+  `fromId` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '发送者',
+  `toId` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收者',
+  `message` text COMMENT '消息内容',
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '消息类型，0为文本消息，1为牵手邀约',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否被删除，0为否，1为是',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table dialy_pay.message: ~0 rows (大约)
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` (`id`, `fromId`, `toId`, `message`, `createTime`, `updateTime`, `type`, `status`) VALUES
+	(1, '15770670930', '13510099014', NULL, '2019-12-03 17:08:22', '2019-12-03 17:08:22', 1, 0);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 
 -- Dumping structure for table dialy_pay.user
@@ -40,17 +39,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   `avatar` varchar(2048) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '头像',
   `nickName` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '昵称',
   `lover` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '恋人id',
+  `hasNewMsg` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否有新消息，0为无，1为有',
+  `storeId` int(11) DEFAULT NULL COMMENT '账单Id',
   `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phoneNum` (`phoneNum`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Dumping data for table dialy_pay.user: ~10 rows (大约)
+-- Dumping data for table dialy_pay.user: ~2 rows (大约)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `phoneNum`, `password`, `sign`, `avatar`, `nickName`, `lover`, `updateTime`, `createTime`) VALUES
-	(1, '13510099014', NULL, NULL, NULL, NULL, NULL, '2019-11-28 18:03:50', '2019-11-28 18:03:50'),
-	(2, '15770670930', NULL, NULL, NULL, NULL, NULL, '2019-11-28 18:05:15', '2019-11-28 18:05:15');
+INSERT INTO `user` (`id`, `phoneNum`, `password`, `sign`, `avatar`, `nickName`, `lover`, `hasNewMsg`, `storeId`, `updateTime`, `createTime`) VALUES
+	(1, '13510099014', NULL, '此人很懒，什么都没有留下', NULL, 'Dialy1575364052', NULL, 1, NULL, '2019-12-03 17:08:22', '2019-12-03 17:07:32'),
+	(2, '15770670930', NULL, '此人很懒，什么都没有留下', NULL, 'Dialy1575364084', NULL, 0, NULL, '2019-12-03 17:08:04', '2019-12-03 17:08:04');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
