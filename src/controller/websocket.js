@@ -23,9 +23,22 @@ module.exports = class extends think.Controller {
     this.broadcast('count', `All: ${Object.keys(clients).length}`);
   }
 
-  talkAction() {
-    const { phoneNum, message } = this.wsData
-    const id = clients[phoneNum]
-    this.websocket.to(id).emit('newMsg', message);
+  async talkAction() {
+    const { fromId, toId, type, message } = this.wsData;
+    const msgModel = this.model('message');
+    const id = clients[toId];
+    // 如果在线
+    if(id) {
+      this.websocket.to(id).emit('newMsg');
+    }
+    // 存入数据库
+    await msgModel.add(
+      {
+        fromId,
+        toId,
+        type,
+        message
+      }
+    );
   }
 }
