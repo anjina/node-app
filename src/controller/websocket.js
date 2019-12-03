@@ -26,11 +26,14 @@ module.exports = class extends think.Controller {
   async talkAction() {
     const { fromId, toId, type, message } = this.wsData;
     const msgModel = this.model('message');
+    const userModel = this.model('user');
     const id = clients[toId];
     // 如果在线
     if(id) {
       this.websocket.to(id).emit('newMsg');
     }
+    // 更新消息状态
+    await userModel.where({ phoneNum: toId }).update({ hasNewMsg: 1 });
     // 存入数据库
     await msgModel.add(
       {

@@ -3,5 +3,6 @@ module.exports = [
   ['/login/:id?', 'rest'],
   ['/register/:id?', 'rest'],
   ['/captcha/:id?', 'rest'],
-  ['/user/:id?', 'rest']
+  ['/user/:id?', 'rest'],
+  ['/message/:id?', 'rest']
 ];
