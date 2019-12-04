@@ -47,9 +47,15 @@ module.exports = class extends Base {
       const options = this.post('options');
       const userModel = this.model('user');
       const phoneNum = this.header('uid');
+      const user = this.post('user')
 
-      await userModel.where({ phoneNum }).update(options);
-      return this.success(phoneNum);
+      if(user) {
+        await userModel.where({ phoneNum: user }).update(options);
+      } else {
+        await userModel.where({ phoneNum }).update(options);
+      }
+      
+      return this.success(user || phoneNum);
     } catch (error) {
       return this.fail(error);
     }
