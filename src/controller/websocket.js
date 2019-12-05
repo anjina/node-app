@@ -30,7 +30,7 @@ module.exports = class extends think.Controller {
     const id = clients[toId];
     // 如果在线
     if(id) {
-      this.websocket.to(id).emit('newMsg');
+      this.websocket.to(id).emit('newMsg', this.wsData);
     }
     // 更新消息状态
     await userModel.where({ phoneNum: toId }).update({ hasNewMsg: 1 });
