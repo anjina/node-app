@@ -5,5 +5,6 @@ module.exports = [
   ['/captcha/:id?', 'rest'],
   ['/user/:id?', 'rest'],
   ['/message/:id?', 'rest'],
-  ['/image/:id?', 'rest']
+  ['/image/:id?', 'rest'],
+  ['/label/:id?', 'rest']
 ];

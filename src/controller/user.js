@@ -54,7 +54,7 @@ module.exports = class extends Base {
       } else {
         await userModel.where({ phoneNum }).update(options);
       }
-      
+
       return this.success(user || phoneNum);
     } catch (error) {
       return this.fail(error);

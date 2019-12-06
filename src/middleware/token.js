@@ -21,6 +21,7 @@ module.exports = options => {
       ctx.status = 403;
       return false;
     }
+
     return next();
   }
 }
