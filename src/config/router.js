@@ -6,5 +6,6 @@ module.exports = [
   ['/user/:id?', 'rest'],
   ['/message/:id?', 'rest'],
   ['/image/:id?', 'rest'],
-  ['/label/:id?', 'rest']
+  ['/label/:id?', 'rest'],
+  ['/pay/:id?', 'rest']
 ];
