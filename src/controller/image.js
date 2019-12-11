@@ -8,15 +8,17 @@ module.exports = class extends Base {
       const uid = this.header('uid');
       const base64Data = data.replace(/^data:image\/\w+;base64,/, "");
       const dataBuffer = Buffer.from(base64Data, 'base64'); // 这是另一种写法
-      const filePath = path.join(__dirname, `../../www/static/image/avatar_${uid}.png`)
+      const now = Date.now();
+      const filePath = path.join(__dirname, `../../www/static/image/avatar_${now}.png`);
 
       await this.writeToFile(filePath, dataBuffer);
-      await this.model('user').where({ phoneNum: uid }).update({ avatar: `/static/image/avatar_${uid}.png` });
+      await this.model('user').where({ phoneNum: uid }).update({ avatar: `/static/image/avatar_${now}.png` });
       return this.success({
-        imgUrl: `/static/image/avatar_${uid}.png`
+        imgUrl: `/static/image/avatar_${now}.png`
       });
     } catch (error) {
-      return this.fail(error); 
+      console.error(error)
+      return this.fail(error);
     }
   }
 

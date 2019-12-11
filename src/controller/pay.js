@@ -4,18 +4,35 @@ const path = require('path');
 
 module.exports = class extends Base {
   async getAction() {
-    const dates = this.formatTime(new Date());
-    const storeId = this.header('storeid');
+    let data;
 
-    const data = await this.model('pay_record')
-      .where({
-        date: { '<': dates[1], '>': dates[0] },
-        storeId
-      })
-      .order('id DESC')
-      .select();
+    const storeId = this.header('storeid');
+    const where = {
+      storeId,
+    }
+
+    const type = this.get('type');
+    if(type == 0) {
+      const dates = this.formatTime(new Date());
+      where.date = { '<': dates[1], '>': dates[0] };
+    }
+
+    const page = this.get('page');
+    const limit = this.get('limit');
+    if(page && limit) {
+      data = await this.model('pay_record')
+        .where(where)
+        .order('id DESC')
+        .page(page, limit)
+        .countSelect();
+    } else {
+      data = await this.model('pay_record')
+        .where(where)
+        .order('id DESC')
+        .select();
+    }
     
-    return this.success(data);
+    return this.success(data);  
   }
   
   async postAction() {
@@ -35,20 +52,19 @@ module.exports = class extends Base {
 
     const formData = {
       ...form,
-      imgsUrl: imgs.join(','),
+      imgsUrl: imgs ? imgs.join(',') : '',
       ...common,
     }
 
-    const labels = form.labels.split(',')
-    const labelsData = labels.map(l => ({
-      name: l,
-      ...common
-    }))
+    const labelData = {
+      name: form.label,
+      ...common,
+    }
 
     const id = await this.model('pay_record').add(formData);
     const data = await this.model('pay_record').where({ id }).find();
 
-    await Promise.all(labelsData.map(label => this.model('label').thenUpdate(label, { name: label.name, storeId: label.storeId })))
+    await this.model('label').thenUpdate(labelData, { name: labelData.name, storeId: labelData.storeId })
     return this.success(data);
   }
 
