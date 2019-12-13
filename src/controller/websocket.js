@@ -32,16 +32,18 @@ module.exports = class extends think.Controller {
     if(id) {
       this.websocket.to(id).emit('newMsg', this.wsData);
     }
-    // 更新消息状态
-    await userModel.where({ phoneNum: toId }).update({ hasNewMsg: 1 });
-    // 存入数据库
-    await msgModel.add(
-      {
-        fromId,
-        toId,
-        type,
-        message
-      }
-    );
+    if(type !== 2) {
+      // 更新消息状态
+      await userModel.where({ phoneNum: toId }).update({ hasNewMsg: 1 });
+      // 存入数据库
+      await msgModel.add(
+        {
+          fromId,
+          toId,
+          type,
+          message
+        }
+      );
+    }
   }
 }

@@ -12,10 +12,13 @@ module.exports = class extends Base {
     }
 
     const type = this.get('type');
-    if(type == 0) {
-      const dates = this.formatTime(new Date());
+    const dates = this.formatTime(type);
+
+    if(dates) {
       where.date = { '<': dates[1], '>': dates[0] };
     }
+
+    think.logger.info('date', `${dates[0]} - ${dates[1]}`);
 
     const page = this.get('page');
     const limit = this.get('limit');
@@ -68,6 +71,21 @@ module.exports = class extends Base {
     return this.success(data);
   }
 
+  async putAction() {
+    const { id, form } = this.post();
+    if(think.isEmpty(id)) {
+      return this.fail('id不能为空');
+    }
+
+    const affectRows = await this.model('pay_record')
+      .where({ id })
+      .update(form)
+    
+    const data = await this.model('pay_record').where({ id }).find();
+    
+    return this.success(data);
+  }
+
   writeToFile(path, data) {
     return new Promise(function(resolve, reject) {
       fs.writeFile(path, data, function(err) {
@@ -96,11 +114,43 @@ module.exports = class extends Base {
     }
   }
 
-  formatTime(date) {
+  formatTime(type) {
+    const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() < 10 ? ('0' + date.getMonth()) : date.getMonth() + 1;
     const day = date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate();
 
-    return [`${year}-${month}-${day} 00:00:00`, `${year}-${month}-${day} 23:59:59`];
+    const start = {
+      year,
+      month,
+      day: 16,
+    }
+    const end = {
+      year,
+      month,
+      day: 15,
+    };
+
+    if(type == 0) {
+      return [
+        `${year}-${month}-${day} 00:00:00`, 
+        `${year}-${month}-${day} 23:59:59`
+      ];
+    }
+
+    if(type == 1) {
+      end.month = day > 15 ? end.month + 1 : end.month;
+      start.month = day > 15 ? start.month : start.month - 1;
+    } else if(type == 2) {
+      start.month = day > 15 ? start.month - 1 : start.month - 2;
+      end.month = day > 15 ? end.month : end.month - 1;
+    } else {
+      return false;
+    }
+
+    return [
+      `${start.year}-${start.month}-${start.day} 00:00:00`, 
+      `${end.year}-${end.month}-${end.day} 23:59:59`
+    ];
   }
 };
