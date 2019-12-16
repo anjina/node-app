@@ -148,6 +148,16 @@ module.exports = class extends Base {
       return false;
     }
 
+    if(start.month < 1) {
+      start.month += 12;
+      start.year -= 1;
+    }
+
+    if(end.month > 12) {
+      end.month -= 12;
+      end.year += 1;
+    }
+
     return [
       `${start.year}-${start.month}-${start.day} 00:00:00`, 
       `${end.year}-${end.month}-${end.day} 23:59:59`
