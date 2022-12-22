@@ -13,7 +13,7 @@
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "cookie-parser": "^1.4.4",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "svg-captcha": "^1.4.0",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
